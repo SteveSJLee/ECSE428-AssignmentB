@@ -15,14 +15,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class GmailStepDefinitions {
 	
-	Gmail gmail;;
+	Gmail gmail;
+    String email = "ecse.428.test@gmail.com";
+	String password = "asdf1234()_+";
 	
 	@Given("^I am on Gmail page$")
     public void givenOnGmailPage() throws Throwable {
 		System.out.println("Given I am on Gmail page");
 		gmail = new Gmail();
-		gmail.setWebdriver();
-		gmail.loginToGmail();
+		//gmail.setWebdriver();
+		//gmail.loginToGmail();
 	}
 	
 	@When("^test when$")
