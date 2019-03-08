@@ -21,13 +21,20 @@ public class Gmail {
     
     
 	public static void main(String[] args) {
-		String TEST_PATH_TO_CHROME_DRIVER = "chromedriver.exe";
+		String TEST_PATH_TO_CHROME_DRIVER_WIN = "chromedriver.exe";
+		String TEST_PATH_TO_CHROME_DRIVER_MAC = "chromedriver";
 	    String email = "ecse.428.test@gmail.com";
 	    String password = "asdf1234()_+";
+		String os = System.getProperty("os.name").toLowerCase();
 		
+		if(os.contains("mac")) {
+			System.out.println(TEST_PATH_TO_CHROME_DRIVER_MAC);
+			System.setProperty("webdriver.chrome.driver", TEST_PATH_TO_CHROME_DRIVER_MAC);
+		} else {
+			System.out.println(TEST_PATH_TO_CHROME_DRIVER_WIN);
+			System.setProperty("webdriver.chrome.driver", TEST_PATH_TO_CHROME_DRIVER_WIN);
+		}
 		
-		System.out.println(TEST_PATH_TO_CHROME_DRIVER);
-		System.setProperty("webdriver.chrome.driver", TEST_PATH_TO_CHROME_DRIVER);
 		WebDriver testDriver = new ChromeDriver();
 		
 		testDriver.get("https://mail.google.com/");
