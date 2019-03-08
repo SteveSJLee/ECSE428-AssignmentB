@@ -1,7 +1,5 @@
 package ca.mcgill.ecse428.email;
 
-import java.util.Set;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,7 +12,9 @@ public class Gmail {
     // Variables
     private WebDriver driver;
 
-    private final String PATH_TO_CHROME_DRIVER = System.getenv("USERPROFILE") + "\\Desktop\\chromedriver";
+    //private final String PATH_TO_CHROME_DRIVER = System.getenv("USERPROFILE") + "\\Desktop\\chromedriver";
+	private final String PATH_TO_CHROME_DRIVER_WIN = "chromedriver.exe";
+	private final String PATH_TO_CHROME_DRIVER_MAC = "chromedriver";
     private final String GMAIL_URL = "https://mail.google.com/mail/u/0/#inbox";
     private final String email = "ecse.428.test@gmail.com";
     private final String password = "asdf1234()_+";
@@ -62,11 +62,44 @@ public class Gmail {
 
 	}
 	
-	private void setWebdriver() {
+	public void setWebdriver() {
 		if (driver == null) {
-			System.setProperty("webdriver.chrome.driver", PATH_TO_CHROME_DRIVER);
-			WebDriver driver = new ChromeDriver();
+			String os = System.getProperty("os.name").toLowerCase();
+			
+			if(os.contains("mac")) {
+				System.out.println(PATH_TO_CHROME_DRIVER_MAC);
+				System.setProperty("webdriver.chrome.driver", PATH_TO_CHROME_DRIVER_MAC);
+			} else {
+				System.out.println(PATH_TO_CHROME_DRIVER_WIN);
+				System.setProperty("webdriver.chrome.driver", PATH_TO_CHROME_DRIVER_WIN);
+			}
+			driver = new ChromeDriver();
 		}
+		
+	}
+	
+	public void loginToGmail() {
+		driver.get("https://mail.google.com/");
+		
+		// login using email and password above
+		if(driver.getCurrentUrl().contains("https://accounts.google.com/signin/v2/identifier?")){
+			driver.findElement(By.id("identifierId")).sendKeys(email);
+			driver.findElement(By.id("identifierNext")).click();
+
+	        WebDriverWait wait = new WebDriverWait(driver, 20);
+	        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("password"))); 
+	        driver.findElement(By.name("password")).sendKeys(password);
+	        driver.findElement(By.id("passwordNext")).click();
+	    }
+	    else{
+	    	driver.findElement(By.name("Email")).sendKeys(email);
+	    	driver.findElement(By.id("next")).click();
+	        WebDriverWait wait = new WebDriverWait(driver, 20);
+	        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("Passwd")));
+	        driver.findElement(By.name("Passwd")).sendKeys(password);
+	        driver.findElement(By.name("signIn")).click();
+	    }
+		
 	}
 
 }
