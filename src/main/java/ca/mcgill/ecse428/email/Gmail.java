@@ -48,7 +48,7 @@ public class Gmail {
 		System.out.println("Sign in: "+signin);
 		
 		// send email with image attachment
-		Boolean sent = sendEmail(recipient, imageFilePath+"img.png", testDriver);
+		Boolean sent = sendEmail(recipient, imageFilePath+"img.png", testDriver); //TODO Add image to the path named "img.png"
 		System.out.println("Send email: " +sent);
 		// reset to inbox
 		resetInbox(testDriver);
@@ -119,7 +119,7 @@ public class Gmail {
 		//attach file
 		try {
 			driver.findElement(By.cssSelector("div.a1.aaA.aMZ")).click();
-			Runtime.getRuntime().exec("osascript src/main/java/attachfile_mac.scpt " + imageFilePath); //TODO what
+			Runtime.getRuntime().exec("osascript src/main/java/attachfile_mac.scpt " + imageFilePath); //TODO i'm not sure about this ...
 			(new WebDriverWait(driver, 20)).until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.dO")));
 			} catch (Exception e) {
 				e.printStackTrace();
