@@ -167,4 +167,8 @@ public class Gmail {
 		driver.get("https://mail.google.com/mail/#inbox");
 	}
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 7674589e0885925ccc7e841b93dec30bdf7c1e00
