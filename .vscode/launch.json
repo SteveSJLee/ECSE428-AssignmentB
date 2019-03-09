@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Gmail",
+            "request": "launch",
+            "mainClass": "ca.mcgill.ecse428.email.Gmail",
+            "projectName": "gmail-automation"
+        }
+    ]
+}

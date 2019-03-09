@@ -23,13 +23,19 @@ public class Gmail {
     
     
 	public static void main(String[] args) {
+		System.out.println(System.getProperty("user.dir").toString());
 		String TEST_PATH_TO_CHROME_DRIVER_WIN = "chromedriver.exe";
 		String TEST_PATH_TO_CHROME_DRIVER_MAC = "chromedriver";
 	    String email = "ecse.428.test@gmail.com";
 		String password = "asdf1234()_+";
+		
 		String os = System.getProperty("os.name").toLowerCase();
 		String recipient = "annejuliecote@hotmail.com";
-		String imageFilePath = System.getenv("USERPROFILE")+"Documents/"; //TODO Change to where image is
+		String recipient2 = "anne-julie.cote@mail.mcgill.ca";
+		String imageFilePath1 = System.getProperty("user.dir").toString()+"/resources/img.png"; //TODO Change to where image is
+		String imageFilePath2 = System.getProperty("user.dir").toString()+"/resources/img2.png";
+		String message = "See attachment.";
+		String object = "Test email with image";
 		
 		if(os.contains("mac")) {
 			System.out.println(TEST_PATH_TO_CHROME_DRIVER_MAC);
@@ -48,11 +54,16 @@ public class Gmail {
 		System.out.println("Sign in: "+signin);
 		
 		// send email with image attachment
-		Boolean sent = sendEmail(recipient, imageFilePath+"img.png", testDriver); //TODO Add image to the path named "img.png"
+		Boolean sent = sendEmail(recipient, imageFilePath1, object, testDriver); //TODO Add image to the path named "img.png"
 		System.out.println("Send email: " +sent);
+		
 		// reset to inbox
 		resetInbox(testDriver);
 	
+		Boolean sent2 = sendEmail(recipient2, imageFilePath2, object, testDriver);
+		System.out.println("Send email 2: "+sent2);
+
+		resetInbox(testDriver);
 
 	}
 	
@@ -96,7 +107,7 @@ public class Gmail {
 		
 	}
 
-	private static boolean sendEmail(String recipient, String imageFilePath, WebDriver driver) {
+	private static boolean sendEmail(String recipient, String imageFilePath, String object, WebDriver driver) {
 
 		//click compose button
 		try {
@@ -107,19 +118,19 @@ public class Gmail {
 			return false;
 		}
 		
-		//enter recipient
+		//enter recipient and object
 		try {
 			WebElement recipientArea = (new WebDriverWait(driver, 10)).until(ExpectedConditions.elementToBeClickable(By.cssSelector("textarea[name='to']")));
 			recipientArea.sendKeys(recipient);
+			driver.findElement(By.className("aoT")).sendKeys(object);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-
 		//attach file
 		try {
-			driver.findElement(By.cssSelector("div.a1.aaA.aMZ")).click();
-			driver.findElement(By.cssSelector("div.a1.aaA.aMZ")).sendKeys(imageFilePath); //TODO this line needs to be fixed
+			driver.findElement(By.xpath("//input[@type='file']")).sendKeys(imageFilePath);
+
 			(new WebDriverWait(driver, 20)).until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.dO")));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -128,38 +139,18 @@ public class Gmail {
 
 		//send
 		try {
-			WebElement sendButton = driver.findElement(By.cssSelector("div[aria-label='Send ‪(⌘Enter)‬']"));
+			WebElement sendButton = driver.findElement(By.className("gU"));
 			sendButton.click();
 			(new WebDriverWait(driver, 10))
 	        .until(ExpectedConditions.or(
 	        		ExpectedConditions.elementToBeClickable(By.cssSelector("span.ag.a8k")),
 	        		ExpectedConditions.elementToBeClickable(By.cssSelector("button.J-at1-auR"))));
 		} catch (Exception e) {
-			if(e instanceof UnhandledAlertException)
-					return true;
-					
-			/*acceptPrompt();
-			(new WebDriverWait(driver, 10))
-	        .until(ExpectedConditions.or(
-	        		ExpectedConditions.elementToBeClickable(By.cssSelector(MESSAGE_SENT_NOTIFICATION)),
-	        		ExpectedConditions.elementToBeClickable(By.cssSelector("button.J-at1-auR"))));	*/
-			
+			e.printStackTrace();
+			return false;
 		}
-		
+		(new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.className("aT")));
 		return true;
-
-	}
-
-	private static boolean sendEmail(String recipient, String imageFile, String message, String object) {
-
-		//set to initial inbox
-		//click compose button
-		//enter recipient
-		//enter object
-		//enter message
-		//attach file
-		//send
-		return false;
 
 	}
 
