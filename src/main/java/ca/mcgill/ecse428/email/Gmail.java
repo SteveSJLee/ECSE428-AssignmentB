@@ -130,6 +130,7 @@ public class Gmail {
 		//attach file
 		try {
 			driver.findElement(By.xpath("//input[@type='file']")).sendKeys(imageFilePath);
+
 			(new WebDriverWait(driver, 20)).until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.dO")));
 			} catch (Exception e) {
 				e.printStackTrace();
