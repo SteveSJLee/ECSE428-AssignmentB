@@ -149,6 +149,7 @@ public class Gmail {
 			e.printStackTrace();
 			return false;
 		}
+		//wait until "Message sent" appears
 		(new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.className("aT")));
 		return true;
 
