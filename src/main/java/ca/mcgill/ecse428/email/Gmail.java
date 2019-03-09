@@ -119,7 +119,7 @@ public class Gmail {
 		//attach file
 		try {
 			driver.findElement(By.cssSelector("div.a1.aaA.aMZ")).click();
-			Runtime.getRuntime().exec("osascript src/main/java/attachfile_mac.scpt " + imageFilePath); //TODO i'm not sure about this ...
+			driver.findElement(By.cssSelector("div.a1.aaA.aMZ")).sendKeys(imageFilePath); //TODO this line needs to be fixed
 			(new WebDriverWait(driver, 20)).until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.dO")));
 			} catch (Exception e) {
 				e.printStackTrace();
