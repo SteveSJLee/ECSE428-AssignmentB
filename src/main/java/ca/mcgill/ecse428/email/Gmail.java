@@ -1,17 +1,13 @@
 package ca.mcgill.ecse428.email;
 
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.By;
-import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.JavascriptExecutor;
 
 public class Gmail {
 	
@@ -22,8 +18,7 @@ public class Gmail {
     private final String password = "asdf1234()_+";
     
 	
-	
-	/*
+	/**
 	 * Set Chrome driver depending on user's OS
 	 */
 	public void setWebdriver() {
@@ -34,12 +29,11 @@ public class Gmail {
 			} else {
 				System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
 			}
-
 			this.driver = new ChromeDriver();
 		}
 	}
 	
-	/*
+	/**
 	 * get Chrome driver, initialize it not set.
 	 */
 	public void getWebdriver() {
@@ -85,7 +79,6 @@ public class Gmail {
 			System.out.println("Sign in didn't work.");
 			return false;
 		}
-		
 	}
 
     /**
@@ -120,43 +113,42 @@ public class Gmail {
 		}
 	}
 	
-    /**TODO: Not working 
-	 * Click Insert Image button
+    /**
+	 * Click Reply button
 	 * 
 	 */
-	public void insertImageByURL(String image_url) {
+	public void clickReplyButton() {
 		//send
 		try {
-			// First, click "insert image button"
-			(new WebDriverWait(this.driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='a2X aaA aMZ']")));
-			WebElement insertImageButton = this.driver.findElement(By.xpath("//div[@class='a2X aaA aMZ']"));
-			insertImageButton.click();
-			
-			
-			// Second click upload button
-			(new WebDriverWait(this.driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id=':3']")));
-			
-			
-			//WebElement hiddenTab = driver.findElement(By.xpath("//div[@id='Mf-ml-ni Mf-nl-ni']"));
-			//((JavascriptExecutor) this.driver).executeScript("arguments[0].setAttribute('style','display: block')", hiddenTab);
-			WebElement uploadButton = this.driver.findElement(By.xpath("//div[@id=':8']"));
-			((JavascriptExecutor) this.driver).executeScript("document.getElementById(':8').setAttribute({'class':'a-Cf a-Cf-w', 'aria-selected':'true'})");
-//			uploadButton.click();
-//			
-			
-			
-			// Lastly insert image url
-			this.driver.findElement(By.xpath("//input[@id=':o']")).sendKeys(image_url);
-			 WebElement insertButton = (new WebDriverWait(this.driver, 10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='picker:ap:2']")));
-			
-			// Click Insert
-			insertButton.click();
-			
+			WebElement sendButton = (new WebDriverWait(this.driver, 10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class='amn']/span")));
+			sendButton.click();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+	}
+	
+    /**
+	 * Look for an email with given address
+	 * 
+	 */
+	public void lookForAnEmail(String fromAddress) {
+		//send
+		try {
+			(new WebDriverWait(this.driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='yW']/span")));
+			
+			List<WebElement> a = driver.findElements(By.xpath("//*[@class='yW']/span/span"));
+			System.out.println(a.size());
+            for(int i=0;i<a.size();i++){
+                System.out.println(a.get(i).getText());
+                System.out.println(a.get(i).getAttribute("email"));
+                if(a.get(i).getAttribute("email").equals(fromAddress)){  // if u want to click on the specific mail then here u can pass it
+                    a.get(i).click();
+                    break;
+                }
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 	}
 	
     /**
@@ -216,23 +208,6 @@ public class Gmail {
 	}
 	
     /**
-     * TODO: Not working
-	 * erase Recipient's address
-	 */
-	public void eraseRecipient() {
-		//enter recipient and subject
-		try {
-			this.driver.findElement(By.xpath("//div[@id=':7b']")).click();
-			(new WebDriverWait(this.driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='vM']")));
-			this.driver.findElement(By.xpath("//div[@class='vM']")).click();
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
-	}
-	
-	
-    /**
 	 * get error message
 	 * @return error message from gmail
 	 */
@@ -269,138 +244,12 @@ public class Gmail {
 	public void resetInbox() {
 		this.driver.get(this.GMAIL_URL);
 	}
-	
-	/// for testing
-	public static void main(String[] args) {
-		System.out.println(System.getProperty("user.dir").toString());
-		String TEST_PATH_TO_CHROME_DRIVER_WIN = "chromedriver.exe";
-		String TEST_PATH_TO_CHROME_DRIVER_MAC = "chromedriver";
-	    String email = "ecse.428.test@gmail.com";
-		String password = "asdf1234()_+";
-		
-		String os = System.getProperty("os.name").toLowerCase();
-		String recipient = "ecse.428.test@gmail.com";
-		String recipient2 = "ecse.428.test@gmail.com";
-		String imageFilePath1 = System.getProperty("user.dir").toString()+"/resources/img.png"; //TODO Change to where image is
-		String imageFilePath2 = System.getProperty("user.dir").toString()+"/resources/img2.png";
-		String message = "See attachment.";
-		String object = "Test email with image";
-		
-		if(os.contains("mac")) {
-			System.out.println(TEST_PATH_TO_CHROME_DRIVER_MAC);
-			System.setProperty("webdriver.chrome.driver", TEST_PATH_TO_CHROME_DRIVER_MAC);
-		} else {
-			System.out.println(TEST_PATH_TO_CHROME_DRIVER_WIN);
-			System.setProperty("webdriver.chrome.driver", TEST_PATH_TO_CHROME_DRIVER_WIN);
-		}
-		
-		WebDriver testDriver = new ChromeDriver();
-		
-		testDriver.get("https://mail.google.com/");
-		
-		// login using email and password above
-		Boolean signin = signIn(email, password, testDriver);
-		System.out.println("Sign in: "+signin);
-		
-		// send email with image attachment
-		Boolean sent = sendEmail(recipient, imageFilePath1, object, testDriver); //TODO Add image to the path named "img.png"
-		System.out.println("Send email: " +sent);
-		
-		// reset to inbox
-		resetInbox(testDriver);
-	
-		Boolean sent2 = sendEmail(recipient2, imageFilePath2, object, testDriver);
-		System.out.println("Send email 2: "+sent2);
 
-		resetInbox(testDriver);
-
-	}
-	
-	
-	
-	private static boolean signIn(String emailAddress, String password, WebDriver testDriver) {
-		if(emailAddress.equals("") || password.equals("")) {
-			System.out.println("Email or password can't be empty.");
-			return false;
-		}
-		try {
-			if(testDriver.getCurrentUrl().contains("https://accounts.google.com/signin/v2/identifier?")){
-			testDriver.findElement(By.id("identifierId")).sendKeys(emailAddress);
-			testDriver.findElement(By.id("identifierNext")).click();
-
-	        WebDriverWait wait = new WebDriverWait(testDriver, 20);
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.name("password"))); 
-			wait.until(ExpectedConditions.elementToBeClickable(By.name("password")));
-	        testDriver.findElement(By.name("password")).sendKeys(password);
-	        testDriver.findElement(By.id("passwordNext")).click();
-			}
-			else{
-				testDriver.findElement(By.name("Email")).sendKeys(emailAddress);
-				testDriver.findElement(By.id("next")).click();
-				WebDriverWait wait = new WebDriverWait(testDriver, 20);
-				wait.until(ExpectedConditions.presenceOfElementLocated(By.name("Passwd")));
-				testDriver.findElement(By.name("Passwd")).sendKeys(password);
-				testDriver.findElement(By.name("signIn")).click();
-			}
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Sign in didn't work.");
-			return false;
-		}
-		
-	}
-
-	private static boolean sendEmail(String recipient, String imageFilePath, String object, WebDriver driver) {
-
-		//click compose button
-		try {
-			WebElement compose = (new WebDriverWait(driver, 10)).until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.T-I.J-J5-Ji.T-I-KE.L3")));
-			compose.click();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		
-		//enter recipient and object
-		try {
-			WebElement recipientArea = (new WebDriverWait(driver, 10)).until(ExpectedConditions.elementToBeClickable(By.cssSelector("textarea[name='to']")));
-			recipientArea.sendKeys(recipient);
-			driver.findElement(By.className("aoT")).sendKeys(object);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		//attach file
-		try {
-			driver.findElement(By.xpath("//input[@type='file']")).sendKeys(imageFilePath);
-
-			(new WebDriverWait(driver, 20)).until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.dO")));
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
-			}
-
-		//send
-		try {
-			WebElement sendButton = driver.findElement(By.className("gU"));
-			sendButton.click();
-			(new WebDriverWait(driver, 10))
-	        .until(ExpectedConditions.or(
-	        		ExpectedConditions.elementToBeClickable(By.cssSelector("span.ag.a8k")),
-	        		ExpectedConditions.elementToBeClickable(By.cssSelector("button.J-at1-auR"))));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		//wait until "Message sent" appears
-		(new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.className("aT")));
-		return true;
-
-	}
-
-	private static void resetInbox(WebDriver driver) {
-		driver.get("https://mail.google.com/mail/#inbox");
+   /**
+	 * kill chromedriver process 
+	 */
+	public void killDriver() {
+		this.driver.quit();
 	}
 
 }

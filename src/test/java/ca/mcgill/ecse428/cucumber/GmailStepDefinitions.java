@@ -34,8 +34,8 @@ public class GmailStepDefinitions {
 	String gmail_url = "https://mail.google.com/mail/#inbox";
 	
 	/* START Customizable variables */
-    String email = "ecse.428.test@gmail.com";  
-	String password = "asdf1234()_+";
+    String email = "ecse.428.test@gmail.com";   // user's email
+	String password = "asdf1234()_+";			// user's password
 	
 	String recipient = "ecse.428.test@gmail.com";
 	String subject = "Email test";
@@ -56,12 +56,11 @@ public class GmailStepDefinitions {
 	
 	@After()
     public void afterScenario() throws Throwable {
-		// go back to main page
+		// clean up the process
 		// 3 second gap between each scenario
 		Thread.sleep(3000);
-		gmail.resetInbox();
+		gmail.killDriver();
 	}
-	
 	
 	@Given("^I am on Gmail page$")
     public void givenOnGmailPage() throws Throwable {
@@ -92,7 +91,6 @@ public class GmailStepDefinitions {
 		gmail.goToUrl(new String("https://www.google.com"));
 	}
 	
-	
 	@Given("^that I am on my current composed message$")
     public void onCurrentComposedMessage() throws Throwable {
 		gmail.goToUrl(gmail_url);
@@ -117,10 +115,20 @@ public class GmailStepDefinitions {
 		gmail.inputContents(recipient, subject);
 	}
 	
-	@And("^I insert photo using web address$")
-    public void pressInsertImageButton() throws Throwable {
-		gmail.insertImageByURL(imageURL);
+	@And("^I press an email to reply$")
+    public void pressAnEmail() throws Throwable {
+		gmail.lookForAnEmail(recipient);
 	}
+	
+	@And("^I press \"Reply\" button$")
+    public void pressReplyButton() throws Throwable {
+		gmail.clickReplyButton();
+	}
+	
+	@And("^I attach an image$")
+    public void attachImage() throws Throwable {
+		gmail.attachImage(imageFilePath);
+	}	
 	
 
 }

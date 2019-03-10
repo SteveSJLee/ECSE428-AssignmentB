@@ -9,9 +9,9 @@ import org.junit.runner.RunWith;
 @CucumberOptions(features="src/test/resources",
 				junit = "--step-notifications",
 				plugin = {"pretty", "html:target/cucumber"},
-				tags = "not @alternative"
+				tags = "@all"
 				)
 public class testRunner {
-	//"@Normal", "@Alternative", "@Error"
+	//"@normal", "@alternative", "@error", "@all"
  
 }
