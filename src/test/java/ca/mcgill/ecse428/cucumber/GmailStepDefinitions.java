@@ -39,7 +39,7 @@ public class GmailStepDefinitions {
 	
 	String recipient = "ecse.428.test@gmail.com";
 	String subject = "Email test";
-	String imageFilePath = System.getProperty("user.dir").toString()+"/resources/img.png";
+	String imageFilePath = System.getProperty("user.dir").toString()+"/resources/img1.png";
 	
 	String imageURL = "https://github.com/SteveSJLee/ECSE428-AssignmentB/blob/master/resources/img.png?raw=true";
 	/* END Customizable variable */
@@ -112,10 +112,13 @@ public class GmailStepDefinitions {
 		Assert.assertEquals(new String("Please specify at least one recipient."), gmail.getErrorMessage());
 	}
 	
+	@And("^I input address for recipient and subject$")
+    public void inputAddressAndSubject() throws Throwable {
+		gmail.inputContents(recipient, subject);
+	}
 	
-	@And("^I press the \"Reply\" button at the bottom$")
+	@And("^I insert photo using web address$")
     public void pressInsertImageButton() throws Throwable {
-		gmail.clickComposeButton();
 		gmail.insertImageByURL(imageURL);
 	}
 	

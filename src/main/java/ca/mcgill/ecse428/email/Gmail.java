@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.JavascriptExecutor;
 
 public class Gmail {
 	
@@ -87,8 +88,6 @@ public class Gmail {
 		
 	}
 
-	
-	
     /**
 	 * Click Compose button
 	 * 
@@ -133,20 +132,24 @@ public class Gmail {
 			WebElement insertImageButton = this.driver.findElement(By.xpath("//div[@class='a2X aaA aMZ']"));
 			insertImageButton.click();
 			
-			(new WebDriverWait(this.driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.id(":3")));
-			// Second click upload button
-//			WebElement tabButton = this.driver.findElement(By.id(":5"));
-//			tabButton.click();
 			
-			WebElement uploadButton = this.driver.findElement(By.id(":8"));
-			uploadButton.click();
+			// Second click upload button
+			(new WebDriverWait(this.driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id=':3']")));
+			
+			
+			//WebElement hiddenTab = driver.findElement(By.xpath("//div[@id='Mf-ml-ni Mf-nl-ni']"));
+			//((JavascriptExecutor) this.driver).executeScript("arguments[0].setAttribute('style','display: block')", hiddenTab);
+			WebElement uploadButton = this.driver.findElement(By.xpath("//div[@id=':8']"));
+			((JavascriptExecutor) this.driver).executeScript("document.getElementById(':8').setAttribute({'class':'a-Cf a-Cf-w', 'aria-selected':'true'})");
+//			uploadButton.click();
+//			
+			
 			
 			// Lastly insert image url
-			this.driver.findElement(By.xpath("//div[@id=':o']")).sendKeys(image_url);
-			(new WebDriverWait(this.driver, 20)).until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.dO")));
+			this.driver.findElement(By.xpath("//input[@id=':o']")).sendKeys(image_url);
+			 WebElement insertButton = (new WebDriverWait(this.driver, 10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='picker:ap:2']")));
 			
 			// Click Insert
-	        WebElement insertButton = this.driver.findElement(By.xpath("//*[@id='picker:ap:2']"));
 			insertButton.click();
 			
 		} catch (Exception e) {
@@ -237,6 +240,9 @@ public class Gmail {
 		(new WebDriverWait(this.driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='Kj-JD']")));
 		WebElement errorText = this.driver.findElement(By.xpath("//div[@class='Kj-JD-Jz']"));
 		String errorMessage = errorText.getText();
+		WebElement okButton = this.driver.findElement(By.xpath("//button[@name='ok']"));
+		okButton.click();
+		
 		return errorMessage;	
 	}
 	
