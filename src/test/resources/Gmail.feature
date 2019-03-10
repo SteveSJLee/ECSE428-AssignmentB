@@ -9,7 +9,7 @@ Feature: Gmail
 		When I press "Send" button
 		Then the email sent is visible in Sent page
 	
-	Examples: 
+	Scenario Outline: 
 	| image | recipient 				|
 	| 1 	| ecse.428.test@gmail.com 	|
 	| 2		| ecse.428.test@gmail.com 	|

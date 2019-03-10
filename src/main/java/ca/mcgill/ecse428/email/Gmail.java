@@ -14,7 +14,7 @@ public class Gmail {
     // Variables
     private WebDriver driver;
     private final String GMAIL_URL = "https://mail.google.com/mail/u/0/#inbox";
-    private final String email = "ecse.428.test@gmail.com";
+   private final String email = "ecse.428.test@gmail.com";
     private final String password = "asdf1234()_+";
     
 	
