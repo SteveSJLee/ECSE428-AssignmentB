@@ -40,7 +40,8 @@ public class GmailStepDefinitions {
 	String recipient = "ecse.428.test@gmail.com";
 	String subject = "Email test";
 	String imageFilePath = System.getProperty("user.dir").toString()+"/resources/img1.png";
-	
+	String imageFilePath2 = System.getProperty("user.dir").toString()+"/resources/img2.jpg";
+
 	String imageURL = "https://github.com/SteveSJLee/ECSE428-AssignmentB/blob/master/resources/img.png?raw=true";
 	/* END Customizable variable */
 	
@@ -127,7 +128,7 @@ public class GmailStepDefinitions {
 	
 	@And("^I attach an image$")
     public void attachImage() throws Throwable {
-		gmail.attachImage(imageFilePath);
+		gmail.attachImage(imageFilePath2);
 	}	
 	
 
