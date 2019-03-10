@@ -7,9 +7,11 @@ import org.junit.runner.RunWith;
  
 @RunWith(Cucumber.class)
 @CucumberOptions(features="src/test/resources",
-				plugin = {"html:target/cucumber-html-report"}, 
-				snippets = SnippetType.CAMELCASE
+				junit = "--step-notifications",
+				plugin = "pretty",
+				tags = "not @alternative"
 				)
 public class testRunner {
+	//"@Normal", "@Alternative", "@Error"
  
 }
