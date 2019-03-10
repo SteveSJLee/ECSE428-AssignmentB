@@ -109,7 +109,7 @@ public class GmailStepDefinitions {
     public void errorWindowAppears() throws Throwable {
 		Assert.assertEquals(new String("Please specify at least one recipient."), gmail.getErrorMessage());
 	}
-	
+    
 	@And("^I input address for recipient and subject$")
     public void inputAddressAndSubject() throws Throwable {
 		gmail.inputContents(recipient, subject);
