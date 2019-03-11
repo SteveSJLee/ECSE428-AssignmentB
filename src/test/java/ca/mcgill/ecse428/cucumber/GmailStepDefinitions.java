@@ -10,24 +10,6 @@ import cucumber.api.java.Before;
 import org.junit.Assert;
 
 
-/*
-
-Scenario: Reply an email with an image
-	Given that I am on an existing email thread
-	And I press the "Reply" button at the bottom
-	And I attach an image
-	When I press "Send" button
-	Then the email sent is visible in Sent page
-
-Scenario: Removing content of an email before sending
-	Given that I am on my current composed message
-	And I press the "X" next to the attached image
-	And I erase the message
-	Then there is no message and attached image to be sent
-
-
- * 
- */
 public class GmailStepDefinitions {
 	
 	Gmail gmail;

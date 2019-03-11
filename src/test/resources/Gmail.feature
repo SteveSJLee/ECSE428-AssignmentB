@@ -8,14 +8,6 @@ Feature: Gmail
 		And I input email address for recipient and attach an image
 		When I press "Send" button
 		Then the email sent is visible in Sent page
-	
-	Examples: 
-	| image | recipient 				|
-	| 1 	| ecse.428.test@gmail.com 	|
-	| 2		| ecse.428.test@gmail.com 	|
-	| 3		| ecse.428.test@gmail.com 	|
-	| 4		| ecse.428.test@gmail.com 	|
-	| 5		| ecse.428.test@gmail.com 	|
     
 	@alternative
 	Scenario: Reply an email with an image
